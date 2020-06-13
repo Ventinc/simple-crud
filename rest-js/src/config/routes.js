@@ -1,5 +1,5 @@
-function routes(app) {
+function router(app) {
   app.get("/", (_, res) => res.send({ hello: "world" }));
 }
 
-module.exports = routes;
+module.exports = router;

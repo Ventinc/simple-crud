@@ -4,6 +4,7 @@
   "description": "A simple js rest crud",
   "main": "index.js",
   "scripts": {
+    "knex": "knex --knexfile ./src/config/database.js",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
