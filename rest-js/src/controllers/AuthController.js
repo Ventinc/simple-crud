@@ -63,8 +63,6 @@ class AuthController {
 
     TokenManager.remove(token);
 
-    console.log(TokenManager.tokens);
-
     res.status(200).end();
   }
 }
