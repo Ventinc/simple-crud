@@ -1,10 +1,12 @@
 const express = require("express");
 const pinoHttp = require("pino-http");
 const pino = require("pino");
+const bodyParser = require("body-parser");
+const { Model } = require("objection");
 const knexConnect = require("knex");
 const config = require("./config");
 const router = require("./config/routes");
-const { Model } = require("objection");
+const trimmerBody = require("./middlewares/trimmerBody");
 
 function startServer() {
   const app = express(); // Initialize express
@@ -17,9 +19,12 @@ function startServer() {
 
   Model.knex(knex); // Bind knex to all objection models
 
-  app.use(pinoHttp({ logger })); // Application middleware
+  // Application middleware
+  app.use(pinoHttp({ logger }));
+  app.use(bodyParser());
+  app.use(trimmerBody);
 
-  router(app); // Setting up router
+  app.use(router); // Setting up router
 
   // Launch api
   app.listen(config.port, () => {

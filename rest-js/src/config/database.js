@@ -1,12 +1,13 @@
-// Update with your config settings.
+const path = require("path");
 
-const directory = "../migrations";
+const directory = path.join(__dirname, "../migrations");
+const sqliteDirectory = path.join(__dirname, "../..");
 
 module.exports = {
   development: {
     client: "sqlite3",
     connection: {
-      filename: "../../dev.sqlite3",
+      filename: `${sqliteDirectory}/dev.sqlite3`,
     },
     migrations: {
       directory,
@@ -17,7 +18,7 @@ module.exports = {
   production: {
     client: "sqlite3",
     connection: {
-      filename: "../../dev.sqlite3",
+      filename: `${sqliteDirectory}/dev.sqlite3`,
     },
     migrations: {
       directory,
