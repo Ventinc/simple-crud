@@ -3,6 +3,7 @@ exports.up = function (knex) {
     table.increments("id");
     table.string("title").notNullable();
     table.text("content").notNullable();
+    table.timestamps(false, true);
     table.integer("userId").unsigned().notNullable();
 
     table.foreign("userId").references("id").inTable("users");

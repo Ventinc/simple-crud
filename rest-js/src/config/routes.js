@@ -1,10 +1,12 @@
 const AuthController = require("../controllers/AuthController");
+const PostsController = require("../controllers/PostsController");
 const HttpError = require("../helpers/HttpError");
 const { createUser, loginUser } = require("../schemas/user");
 const validateSchema = require("../middlewares/validateSchema");
 const asyncHandler = require("../helpers/asyncHandler");
 const { Router } = require("express");
 const authenticate = require("../middlewares/authenticate");
+const { paginationSchema } = require("../schemas/common");
 
 const router = Router();
 
@@ -27,6 +29,13 @@ router.get("/authenticate", authenticate, (_, res) =>
   res.send({ hello: "world" })
 );
 
+router.get(
+  "/posts",
+  validateSchema.query(paginationSchema),
+  asyncHandler(PostsController.index)
+);
+router.get("/posts/:id", asyncHandler(PostsController.show));
+
 // Manage error 404 (No routes found => 404)
 router.use((req, res, next) => {
   const err = new HttpError("Not Found", "Not Found", 404);
@@ -39,7 +48,7 @@ router.use((err, req, res, next) => {
 
   if (!(err instanceof HttpError)) {
     res.status(500);
-    res.json({ error: true });
+    res.json({ error: "Internal Server Error" });
   }
 
   res.status(err.status);
