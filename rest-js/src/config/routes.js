@@ -7,6 +7,7 @@ const asyncHandler = require("../helpers/asyncHandler");
 const { Router } = require("express");
 const authenticate = require("../middlewares/authenticate");
 const { paginationSchema } = require("../schemas/common");
+const { createPost, updatePost } = require("../schemas/post");
 
 const router = Router();
 
@@ -34,7 +35,20 @@ router.get(
   validateSchema.query(paginationSchema),
   asyncHandler(PostsController.index)
 );
+router.post(
+  "/posts",
+  authenticate,
+  validateSchema.body(createPost),
+  asyncHandler(PostsController.create)
+);
 router.get("/posts/:id", asyncHandler(PostsController.show));
+router.put(
+  "/posts/:id",
+  authenticate,
+  validateSchema.body(updatePost),
+  asyncHandler(PostsController.update)
+);
+router.delete("/posts/:id", authenticate, asyncHandler(PostsController.delete));
 
 // Manage error 404 (No routes found => 404)
 router.use((req, res, next) => {
