@@ -3,7 +3,7 @@ const asyncHandler = require("../helpers/asyncHandler");
 const config = require("../config");
 const TokenManager = require("../helpers/TokenManager");
 const HttpError = require("../helpers/HttpError");
-const User = require("../models/Users");
+const User = require("../models/User");
 
 function getTokenFromHeader(req) {
   if (

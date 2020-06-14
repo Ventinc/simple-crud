@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/Users");
+const User = require("../models/User");
 const HttpError = require("../helpers/HttpError");
 const { compare } = require("../helpers/bcrypt");
 const TokenManager = require("../helpers/TokenManager");
