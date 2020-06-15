@@ -1,25 +1,21 @@
 const Post = require("../models/Post");
 const HttpError = require("../helpers/HttpError");
+const { query } = require("../models/Post");
 
 class PostsController {
   static async index(req, res) {
     const { page, perPage } = req.query;
 
-    const posts = await Post.query()
+    const result = await Post.query()
       .select(
-        "posts.id",
-        "posts.title",
-        "posts.content",
-        "posts.created_at as createdAt",
-        "posts.updated_at as updatedAt",
+        "posts.*",
         "author.username as authorUsername",
         "author.id as authorId"
       )
       .joinRelated("author")
-      .offset((page - 1) * perPage)
-      .limit(perPage);
+      .page(page, perPage);
 
-    res.send({ posts });
+    res.send({ ...result, page, perPage });
   }
 
   static async show(req, res) {

@@ -11,6 +11,21 @@ class User extends Model {
       this.password = hash(this.password);
     }
   }
+
+  static get relationMappings() {
+    const Post = require("./Post");
+
+    return {
+      posts: {
+        relation: Model.HasManyRelation,
+        modelClass: Post,
+        join: {
+          from: "users.id",
+          to: "posts.userId",
+        },
+      },
+    };
+  }
 }
 
 module.exports = User;

@@ -2,7 +2,7 @@ const express = require("express");
 const pinoHttp = require("pino-http");
 const pino = require("pino");
 const bodyParser = require("body-parser");
-const { Model } = require("objection");
+const { Model, knexSnakeCaseMappers } = require("objection");
 const knexConnect = require("knex");
 const config = require("./config");
 const router = require("./config/routes");
@@ -15,7 +15,10 @@ function startServer() {
     prettyPrint: config.env !== "production" ? true : false,
   });
 
-  const knex = knexConnect(config.db[config.env]); // Initialize database connection
+  const knex = knexConnect({
+    ...config.db[config.env],
+    ...knexSnakeCaseMappers(),
+  }); // Initialize database connection
 
   Model.knex(knex); // Bind knex to all objection models
 

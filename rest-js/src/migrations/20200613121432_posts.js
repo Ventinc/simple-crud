@@ -4,9 +4,9 @@ exports.up = function (knex) {
     table.string("title").notNullable();
     table.text("content").notNullable();
     table.timestamps(false, true);
-    table.integer("userId").unsigned().notNullable();
+    table.integer("user_id").unsigned().notNullable();
 
-    table.foreign("userId").references("id").inTable("users");
+    table.foreign("user_id").references("id").inTable("users");
   });
 };
 

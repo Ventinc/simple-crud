@@ -1,21 +1,33 @@
 const { Model } = require("objection");
-const User = require("./User");
 
 class Post extends Model {
   static get tableName() {
     return "posts";
   }
 
-  static relationMappings = {
-    author: {
-      relation: Model.HasManyRelation,
-      modelClass: User,
-      join: {
-        from: "posts.userId",
-        to: "users.id",
+  $beforeInsert() {
+    this.createdAt = new Date().toISOString();
+    this.updatedAt = new Date().toISOString();
+  }
+
+  $beforeUpdate() {
+    this.updatedAt = new Date().toISOString();
+  }
+
+  static get relationMappings() {
+    const User = require("./User");
+
+    return {
+      author: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: User,
+        join: {
+          from: "posts.userId",
+          to: "users.id",
+        },
       },
-    },
-  };
+    };
+  }
 }
 
 module.exports = Post;
